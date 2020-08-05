@@ -1,11 +1,39 @@
-import React from 'react'
-import { View, Text, Image } from 'react-native'
+import React, { useEffect, useState } from 'react'
+import { View, Text, Image, Alert } from 'react-native'
 import Icon from 'react-native-vector-icons/Ionicons'
 import { Images } from '@assets'
 import styles from './EnableLognInStyle'
 import { TouchableOpacity } from 'react-native-gesture-handler'
+import TouchID from 'react-native-touch-id'
 
 export const EnableLognIn = () => {
+    const[supported,setSupported]= useState(false)
+    useEffect(()=>{
+        TouchID.isSupported()
+        .then( sucesso =>{
+            setSupported(true);
+            alert('Touch ID support');
+        })
+        .catch((error) =>{
+            console.log('error touch',error);
+            alert('Touch ID no support');
+        })
+    },[])
+    function handleLogin() {
+        const configs = {
+            title:'Authenicacao Touch ID',
+            color:'#ff0000',
+            sensorErrorDescription:'Touch ID invalido'
+        };
+        TouchID.authenticate('Login App', configs)
+        .then( sucess =>{
+            console.log('Athenicate successful')
+        })
+        .catch((error) =>{
+            console.log('Athenicate failed')
+        })
+    }
+
     return (
         <View style={styles.container}>
             <View style={styles.ViewHead}>
@@ -23,7 +51,7 @@ export const EnableLognIn = () => {
                 </View>
             </View>
             <View style={styles.ViewBody}>
-                <TouchableOpacity style={styles.touch}>
+                <TouchableOpacity style={styles.touch} onPress={handleLogin}>
                     <Text style={styles.TextTouch}>Enable Face ID/Touch</Text>
                 </TouchableOpacity>
             </View>
