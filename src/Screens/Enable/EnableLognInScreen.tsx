@@ -7,7 +7,7 @@ import { TouchableOpacity } from 'react-native-gesture-handler'
 import TouchID from 'react-native-touch-id'
 
 export const EnableLognIn = () => {
-    const[supported,setSupported]= useState(false)
+    const[supported,setSupported]= useState(null)
     useEffect(()=>{
         TouchID.isSupported()
         .then( sucesso =>{
@@ -27,10 +27,11 @@ export const EnableLognIn = () => {
         };
         TouchID.authenticate('Login App', configs)
         .then( sucess =>{
-            console.log('Athenicate successful')
+            alert('Athenicate successful');
+            
         })
         .catch((error) =>{
-            console.log('Athenicate failed')
+            alert('Athenicate failed')
         })
     }
 
